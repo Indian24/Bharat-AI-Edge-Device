@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Real-Time Energy Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="./style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      margin: 0;
+      padding: 20px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .chart-container {
+      width: 90%;
+      max-width: 1000px;
+      margin: 20px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <h2>⚡ Real-Time Energy Monitoring Dashboard</h2>
+
+  <div class="chart-container">
+    <canvas id="liveChart"></canvas>
+  </div>
+
+  <div class="chart-container">
+    <canvas id="comparisonChart"></canvas>
+  </div>
+
+  <script>
+    // ------------ REAL-TIME CHART (Current vs Predicted) -----------------
+    const ctx1 = document.getElementById("liveChart").getContext("2d");
+    const liveChart = new Chart(ctx1, {
+      type: "line",
+      data: {
+        labels: [],
+        datasets: [
+          {
+            label: "Current Consumption (kWh)",
+            borderColor: "red",
+            borderWidth: 2,
+            fill: false,
+            data: []
+          },
+          {
+            label: "Predicted Consumption (kWh)",
+            borderColor: "blue",
+            borderWidth: 2,
+            borderDash: [5, 5],
+            fill: false,
+            data: []
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        animation: false,
+        scales: {
+          x: { title: { display: true, text: "Time (s)" } },
+          y: { title: { display: true, text: "Energy (kWh)" }, beginAtZero: true }
+        }
+      }
+    });
+
+    let time = 0;
+    setInterval(() => {
+      time++;
+      const current = Math.random() * 100 + 300;  // Simulated current usage
+      const predicted = current - (Math.random() * 30); // Slightly lower predicted
+
+      liveChart.data.labels.push(time + "s");
+      liveChart.data.datasets[0].data.push(current);
+      liveChart.data.datasets[1].data.push(predicted);
+
+      if (liveChart.data.labels.length > 20) {
+        liveChart.data.labels.shift();
+        liveChart.data.datasets[0].data.shift();
+        liveChart.data.datasets[1].data.shift();
+      }
+
+      liveChart.update();
+    }, 1000);
+
+    // ------------ COMPARISON CHART (Market vs Our Machine) -----------------
+    const ctx2 = document.getElementById("comparisonChart").getContext("2d");
+    const comparisonChart = new Chart(ctx2, {
+      type: "bar",
+      data: {
+        labels: ["Machine A", "Machine B", "Machine C", "Our Optimized Machine"],
+        datasets: [{
+          label: "Energy Consumption (kWh per cycle)",
+          backgroundColor: ["#e74c3c","#f39c12","#3498db","#2ecc71"],
+          data: [500, 450, 480, 300]  // Example values
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          y: { beginAtZero: true, title: { display: true, text: "Energy (kWh)" } }
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
