@@ -228,7 +228,4 @@ This project demonstrates:
 
 It reflects the responsibilities and mindset expected of modern Cloud & AI Engineers.
 
----
-
----
 ```
