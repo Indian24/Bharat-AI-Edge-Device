@@ -230,10 +230,5 @@ It reflects the responsibilities and mindset expected of modern Cloud & AI Engin
 
 ---
 
-## 16. License & Contribution Guidelines
-
-This project is released under the MIT License.  
-Contributions are welcome via pull requests with clear documentation and testing.
-
 ---
 ```
